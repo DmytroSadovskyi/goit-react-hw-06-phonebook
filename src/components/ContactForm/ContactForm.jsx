@@ -1,8 +1,8 @@
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import 'yup-phone-lite';
-import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
 import {
   Form,
   FormField,
@@ -22,7 +22,9 @@ const ContactSchema = Yup.object({
     .required('Name is required!'),
   number: Yup.string().phone('UA').required('Phone number is required!'),
 });
-export const ContactForm = ({ onSave }) => {
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+
   return (
     <Formik
       initialValues={{
@@ -31,7 +33,7 @@ export const ContactForm = ({ onSave }) => {
       }}
       validationSchema={ContactSchema}
       onSubmit={(values, actions) => {
-        onSave({ ...values, id: nanoid() });
+        dispatch(addContact(values.name, values.number));
         actions.resetForm();
       }}
     >
@@ -83,7 +85,3 @@ export const ContactForm = ({ onSave }) => {
 };
 
 export default ContactForm;
-
-ContactForm.propTypes = {
-  onSave: PropTypes.func.isRequired,
-};
