@@ -1,5 +1,4 @@
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
 import { FilterLabel, FilterInput } from './Filter.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFilter } from 'redux/selectors';
