@@ -1,18 +1,22 @@
 import { FaTrashAlt } from 'react-icons/fa';
 import { ContactItem } from './ContactsList.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { getVisibleContacts } from 'redux/selectors';
+import { getFilter, getContacts } from 'redux/selectors';
 import { deleteContact } from 'redux/contactsSlice';
 
 const ContactsList = () => {
-  const contacts = useSelector(getVisibleContacts);
+  const filter = useSelector(getFilter);
+  const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
+  const visibleContacts = contacts?.filter(contact =>
+    contact?.name?.toLowerCase().includes(filter.toLowerCase())
+  );
 
   const handleDelete = id => dispatch(deleteContact(id));
 
   return (
     <ul>
-      {contacts.map(({ name, number, id }) => (
+      {visibleContacts?.map(({ name, number, id }) => (
         <ContactItem key={id}>
           <span>{name}</span>
           <span>{number}</span>
